@@ -15,11 +15,7 @@ library(lubridate)
 #
 #
 example_usage <- function() {
-  a <- meld_iFit_S22i_CSV_TCX_to_better_TCX(chr.file = '2020_10_24_16_10_Santa_Maria_de_Vilalba_Ride,_Barcelona,_Spain')
-  a <- meld_iFit_S22i_CSV_TCX_to_better_TCX(chr.file = '2020_10_24_16_10_Lupine_Trail_Steady-State_Ride,_Crested_Butte,_Colorado')
-  a <- meld_iFit_S22i_CSV_TCX_to_better_TCX(chr.file = '2020_10_26_11_10_Arakawa_River_Endurance_Ride,_Tokyo,_Japan')
-  a <- meld_iFit_S22i_CSV_TCX_to_better_TCX(chr.file = '2020_10_27_11_10_Hill_Repeats')
-  
+  a <- meld_iFit_S22i_CSV_TCX_to_better_TCX(chr.file = '2021_02_11_12_02_Kurushima-Kaikyo_Bridge_Interval_Ride,_Imabari,_Japan')
 }
 #
 # This function is intended to parse the TCX file format that comes from iFit.
@@ -63,7 +59,7 @@ parseIFit <- function(chr.path = '~/Downloads/', chr.fileName = NA) {
 # 2. It assumes the CSV will have every second represented, but the TCX might not.
 # 3. It assumes other stuff, too.
 #
-meld_iFit_S22i_CSV_TCX_to_better_TCX <- function(chr.path = '~/Downloads/', chr.file = NA) {
+meld_iFit_S22i_CSV_TCX_to_better_TCX <- function(chr.path = 'C:\\iFit\\', chr.file = NA) {
   # If you don't have a filename, then fail
   if(is.na(chr.file)) error("Don't have a file to process")
   # If you don't have both the TCX and the CSV, then fail
@@ -132,7 +128,12 @@ meld_iFit_S22i_CSV_TCX_to_better_TCX <- function(chr.path = '~/Downloads/', chr.
   # separate lines for readability
   dt[, fullTime := paste0(gsub(" ", "T", as.character(lubridate::ymd_hms(start_time) - ms(ride_duration) + ms(i.Time))), ".000Z") ]
   dt[, trackpoint := paste0("<Trackpoint>\n  <Time>", fullTime, "</Time>\n")]
-  dt[!is.na(AltitudeMeters), trackpoint := paste0(trackpoint, "  <AltitudeMeters>", AltitudeMeters, "</AltitudeMeters>\n")]
+  if(exists("AltitudeMeters")){
+     dt[!is.na(AltitudeMeters), trackpoint := paste0(trackpoint, "  <AltitudeMeters>", AltitudeMeters, "</AltitudeMeters>\n")]
+  }
+  else {
+     dt[, trackpoint := paste0(trackpoint, "  <AltitudeMeters>0</AltitudeMeters>\n")]
+  }
   dt[, trackpoint := paste0(trackpoint, "  <DistanceMeters>", Miles * 1609.34, "</DistanceMeters>\n")]
   dt[i.HR != 0, trackpoint := paste0(trackpoint, "  <HeartRateBpm><Value>",round(i.HR, 0), "</Value></HeartRateBpm>\n")]
   dt[, trackpoint := paste0(trackpoint, "  <Cadence>",i.RPM, "</Cadence>\n")]
