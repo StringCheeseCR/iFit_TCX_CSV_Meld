@@ -27,7 +27,7 @@ Creating the better TCX file
 1. In iFit download both the TCX and CSV with Elevation files and put them into the same directory.
 2. Run the command to create the better TCX file
 
-    a <- meld_iFit_S22i_CSV_TCX_to_better_TCX(chr.file = '<filename without extension>', chr.path = '<directory files are in>')
+    a <- meld_iFit_S22i_CSV_TCX_to_better_TCX(chr.file = 'filename without extension', chr.path = 'directory files are in')
    
     ex. a <- meld_iFit_S22i_CSV_TCX_to_better_TCX(chr.file = '2021_03_05_19_03_Playa_Guiones_Interval_Walk,_Costa_Rica', chr.path = 'C:\\iFit\\')
     
