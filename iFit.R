@@ -2,6 +2,7 @@ library(data.table)
 library(zoo)
 library(XML)
 library(lubridate)
+library(stringr)
 #
 # Instructions on use:
 # 
@@ -80,9 +81,17 @@ meld_iFit_S22i_CSV_TCX_to_better_TCX <- function(chr.path = 'C:\\iFit\\', chr.fi
   
   # roll merge
   dt <- tcx[csv, roll = TRUE]
+
+  value = 'Ride'
+  if(str_detect(chr.file, value)){
+      act <- 'Biking'
+  }
+  else {
+      act <- 'Running'
+  } 
   
   # Create base variables for the TCX output file
-  chr.static.header <- '<?xml version="1.0" encoding="UTF-8"?>
+  chr.static.header <- paste0('<?xml version="1.0" encoding="UTF-8"?>
             <TrainingCenterDatabase
               xsi:schemaLocation="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd"
               xmlns:ns5="http://www.garmin.com/xmlschemas/ActivityGoals/v1"
@@ -91,7 +100,7 @@ meld_iFit_S22i_CSV_TCX_to_better_TCX <- function(chr.path = 'C:\\iFit\\', chr.fi
               xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns4="http://www.garmin.com/xmlschemas/ProfileExtension/v1">
               <Activities>
-                <Activity Sport="Biking">'
+                <Activity Sport="', act, '">')
   chr.static.footer <- '        </Track>
                 </Lap>
                 <Creator xsi:type="Device_t">
@@ -147,4 +156,3 @@ meld_iFit_S22i_CSV_TCX_to_better_TCX <- function(chr.path = 'C:\\iFit\\', chr.fi
   write(output, file = output.file)
   return(output.file)
 }
-
