@@ -21,13 +21,9 @@ Installation
       
       Note: you may need to install 1 at a time.
 5. Now open the iFit.R file in the RGui
-6. Copy the parseIFit function
+6. Copy the entire contents of the iFit.R file
 7. Click the "Window" button at the top to return to the console
-8. Paste the function that you copied
-9. Click on the Windows menu and go back to iFit.R
-10. Copy the meld_iFit_S22i_CSV_TCX_to_better_TCX function
-11. Click the "Window" button at the top to return to the console
-12. Paste the function that you copied
+8. Paste the text that you copied
 
 Creating the better TCX file
 1. In iFit download both the TCX and CSV with Elevation files and put them into the same directory.
